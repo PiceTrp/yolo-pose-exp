@@ -1,7 +1,7 @@
 # my use
-/assets
-/images
-/labels
+assets/
+images/
+labels/
 *.jpg
 *.png
 *.txt
