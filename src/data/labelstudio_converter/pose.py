@@ -3,6 +3,7 @@ import shutil
 import json
 from tqdm import tqdm
 import logging
+import traceback
 from typing import List, Dict, Any
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -57,19 +58,28 @@ class LabelstudioConverterPose(LabelstudioConverter):
                 shutil.copy(image_path, os.path.join(images_dir, image_filename))
 
                 # Prepare YOLO label data
-                yolo_labels = ls_keypoints_to_yolo(label_dict)
+                keypoints_bbox = label_dict['keypoints_bbox']
+                keypoints = label_dict['keypoints']
+                yolo_labels = ls_keypoints_to_yolo(keypoints_bbox, keypoints)
 
                 # Save YOLO label data to a .txt file
                 label_filename = os.path.splitext(image_filename)[0] + '.txt'
                 label_path = os.path.join(labels_dir, label_filename)
                 self.save_yolo_format(yolo_labels, label_path)
             except KeyError as e:
-                logging.error("Missing key in data: %s", e)
+                logging.error(f"\n/// Missing {e} key in data id: {label_dict['id']}///\n")
                 if verbose:
                     logging.info("Image_path: %s", image_path)
                     logging.info("Data: %s", label_dict)
+                    # Print the full traceback
+                    traceback_str = traceback.format_exc()
+                    logging.error("Full traceback:\n%s", traceback_str)
+
             except Exception as e:
                 logging.error("Error processing item: %s", e)
+                # Print the full traceback
+                traceback_str = traceback.format_exc()
+                logging.error("Full traceback:\n%s", traceback_str)
 
     def save_yolo_format(self, data: List[List[float]], file_name: str):
         """

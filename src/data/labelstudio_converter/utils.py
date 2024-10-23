@@ -1,3 +1,9 @@
+import os
+import logging
+import traceback
+
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+
 def prepare_bbox_format(bbox):
     """
     convert original bbox value from json-full to my custom json value
@@ -23,15 +29,19 @@ def prepare_keypoint_format(keypoint):
     convert original keypoint value from json-full to my custom json value
     still no preprocess in this step
     """
-    keypoint_dict = {}
-    keypoint_dict['x'] = keypoint['value']['x']
-    keypoint_dict['y'] = keypoint['value']['y']
-    keypoint_dict['width'] = keypoint['value']['width']
-    keypoint_dict['keypointlabels'] = keypoint['value']['keypointlabels']
-    keypoint_dict['original_width'] = keypoint['original_width']
-    # add-on parent ids
-    keypoint_dict['parentID'] = keypoint['parentID']
-    keypoint_dict['type'] = keypoint['type'] # keypointlabels
+    try:
+        keypoint_dict = {}
+        keypoint_dict['x'] = keypoint['value']['x']
+        keypoint_dict['y'] = keypoint['value']['y']
+        keypoint_dict['width'] = keypoint['value']['width']
+        keypoint_dict['keypointlabels'] = keypoint['value']['keypointlabels']
+        keypoint_dict['original_width'] = keypoint['original_width']
+        # add-on parent ids
+        keypoint_dict['parentID'] = keypoint['parentID']
+        keypoint_dict['type'] = keypoint['type'] # keypointlabels
+    except KeyError as e:
+        logging.error("Missing key in data: %s", e)
+        # logging.error(f"Data: {keypoint_dict}")
     return keypoint_dict
 
 
