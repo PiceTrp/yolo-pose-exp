@@ -1,0 +1,26 @@
+data:
+  annotation_path: "./data/project-69-at-2024-10-23-18-56-0ac7b1aa.json"
+  output_path: "./data/exp1"
+
+prepare:
+  split: 0.3
+  seed: 20170428
+
+train:
+  seed: 20170428
+  mlflow:
+    MLFLOW_TRACKING_URI: "https://mlflow.connectedtech.co.th"
+    AWS_ACCESS_KEY_ID: 08rI2JgLEXYi3ctLLfXY
+    AWS_SECRET_ACCESS_KEY: YiArLasbrIRBEEmtMocy6PgdGC6G5U4cOKfqJt4R
+    MLFLOW_S3_ENDPOINT_URL: "https://minio.connectedtech.co.th/"
+  yolo:
+    pretraiend_model: "yolo11x-pose.pt"
+    epochs: 100
+    batch_size: 16
+    img_size: 640
+    project: "./assets"
+    name: exp1
+
+
+
+
