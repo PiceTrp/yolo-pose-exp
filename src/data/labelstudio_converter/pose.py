@@ -5,7 +5,7 @@ from tqdm import tqdm
 import logging
 from typing import List, Dict, Any
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 from .base import LabelstudioConverter
 from .utils import *
@@ -64,17 +64,12 @@ class LabelstudioConverterPose(LabelstudioConverter):
                 label_path = os.path.join(labels_dir, label_filename)
                 self.save_yolo_format(yolo_labels, label_path)
             except KeyError as e:
-                print(f"Missing key in data: {e}")
+                logging.error("Missing key in data: %s", e)
                 if verbose:
-                    print(f"Image path: {image_path}")
-                    print(f"Data: ")
-                    display(label_dict)
+                    logging.info("Image_path: %s", image_path)
+                    logging.info("Data: %s", label_dict)
             except Exception as e:
-                print(f"Error processing item: {e}")
-                if verbose:
-                    print(f"Image path: {image_path}")
-                    print(f"Data: ")
-                    display(label_dict)
+                logging.error("Error processing item: %s", e)
 
     def save_yolo_format(self, data: List[List[float]], file_name: str):
         """
@@ -113,9 +108,9 @@ def get_keypoints_data(ls_data: Dict[str, Any]) -> Dict[str, Any]:
 
     for label in result:
         if "rectanglelabels" in label['value']:
-            label_dict['keypoints_bbox'].append(self.prepare_bbox_format(label))
+            label_dict['keypoints_bbox'].append(prepare_bbox_format(label))
         elif "keypointlabels" in label['value']:
-            label_dict['keypoints'].append(self.prepare_keypoint_format(label))
+            label_dict['keypoints'].append(prepare_keypoint_format(label))
     return label_dict
 
 
