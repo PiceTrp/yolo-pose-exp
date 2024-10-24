@@ -16,8 +16,9 @@ train:
   yolo:
     pretrained_model: "yolo11n-pose.pt"
     epochs: 100
-    batch_size: 4
+    batch_size: 32
     img_size: 640
+    device: [0,1]
     project: "Safety_Crane_YOLOv11-pose"
     name: exp1-data_ver1-model_v11n_pose
 

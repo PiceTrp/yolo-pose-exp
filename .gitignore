@@ -136,3 +136,4 @@ dmypy.json
 cython_debug/
 /results
 /YOLOv11-pose
+/Safety_Crane_YOLOv11-pose

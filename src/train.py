@@ -42,7 +42,7 @@ def main():
                           batch=params_train['yolo']['batch_size'],
                           project=params_train['yolo']['project'],
                           name=params_train['yolo']['name'],
-                          device=0,
+                          device=params_train['yolo']['device'],
                           exist_ok=True,
                           seed=params_train['seed'],)
 

@@ -63,7 +63,7 @@ stages:
       size: 93850498
       nfiles: 150
   train:
-    cmd: python src/train.py data/train data/val data/data.yaml YOLOv11-pose
+    cmd: python src/train.py data/train data/val data/data.yaml Safety_Crane_YOLOv11-pose
     deps:
     - path: data/data.yaml
       hash: md5
@@ -81,8 +81,8 @@ stages:
       nfiles: 151
     - path: src/train.py
       hash: md5
-      md5: f567296a359802a34089404c76717574
-      size: 2022
+      md5: 529a9989a49a7f4c9610b9b6a4c74f24
+      size: 2051
     params:
       params.yaml:
         train.mlflow:
@@ -92,15 +92,18 @@ stages:
           MLFLOW_S3_ENDPOINT_URL: https://minio.connectedtech.co.th/
         train.seed: 42
         train.yolo:
-          pretrained_model: yolo11x-pose.pt
-          epochs: 5
-          batch_size: 4
+          pretrained_model: yolo11n-pose.pt
+          epochs: 100
+          batch_size: 32
           img_size: 640
-          project: YOLOv11-pose
-          name: exp1
+          device:
+          - 0
+          - 1
+          project: Safety_Crane_YOLOv11-pose
+          name: exp1-data_ver1-model_v11n_pose
     outs:
-    - path: YOLOv11-pose
+    - path: Safety_Crane_YOLOv11-pose
       hash: md5
-      md5: 858cc332c85228c2dba2dbda29d26f5a.dir
-      size: 241862713
-      nfiles: 26
+      md5: f25b465ae2946284f2f59d16ee5e635c.dir
+      size: 21122783
+      nfiles: 29
