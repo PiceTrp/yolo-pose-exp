@@ -1,0 +1,64 @@
+schema: '2.0'
+stages:
+  get_data:
+    cmd: python src/get_data.py data/project-69-at-2024-10-23-18-56-0ac7b1aa.json
+    deps:
+    - path: data/project-69-at-2024-10-23-18-56-0ac7b1aa.json
+      hash: md5
+      md5: 462ddb44ecab5508f8fd7ec54570d67d
+      size: 6136273
+    - path: src/get_data.py
+      hash: md5
+      md5: 78de0c75704f98a69f9a7b0e47e0ac23
+      size: 562
+    params:
+      params.yaml:
+        data.annotation_path: ./data/project-69-at-2024-10-23-18-56-0ac7b1aa.json
+        data.output_path: data
+    outs:
+    - path: data/images
+      hash: md5
+      md5: c40d9226cf103faf549db8d9d8d58390.dir
+      size: 464092114
+      nfiles: 387
+    - path: data/labels
+      hash: md5
+      md5: 98453fc9267424ed4b26d64b6c560193.dir
+      size: 278379
+      nfiles: 375
+  prepare:
+    cmd: python src/prepare.py data/train data/val data/data.yaml
+    deps:
+    - path: data/images
+      hash: md5
+      md5: c40d9226cf103faf549db8d9d8d58390.dir
+      size: 464092114
+      nfiles: 387
+    - path: data/labels
+      hash: md5
+      md5: 98453fc9267424ed4b26d64b6c560193.dir
+      size: 278379
+      nfiles: 375
+    - path: src/prepare.py
+      hash: md5
+      md5: 401d3cf7920984d4bafe82531aa6ed6d
+      size: 3163
+    params:
+      params.yaml:
+        prepare.seed: 42
+        prepare.split: 0.8
+    outs:
+    - path: data/data.yaml
+      hash: md5
+      md5: cc302bf8214280b4b4b1a15c813f8877
+      size: 216
+    - path: data/train
+      hash: md5
+      md5: 6c513852b67baca390334936f3251f5e.dir
+      size: 354150503
+      nfiles: 600
+    - path: data/val
+      hash: md5
+      md5: e465f9420fd8a17ebd970a7ac9126fce.dir
+      size: 93850498
+      nfiles: 150

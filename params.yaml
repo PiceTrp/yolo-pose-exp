@@ -1,6 +1,6 @@
 data:
   annotation_path: "./data/project-69-at-2024-10-23-18-56-0ac7b1aa.json"
-  output_path: "data/exp1"
+  output_path: "data"
 
 prepare:
   split: 0.8
