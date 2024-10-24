@@ -5,7 +5,7 @@ from pathlib import Path
 import yaml
 
 
-def split_data(image_dir, label_dir, split_ratio=0.8):
+def split_data(image_dir, label_dir, split_ratio=0.8, seed=42):
     """
     Splits the dataset into training and validation sets by moving files.
 
@@ -17,6 +17,7 @@ def split_data(image_dir, label_dir, split_ratio=0.8):
     Creates:
         train/images, train/labels, val/images, val/labels directories with respective data.
     """
+    random.seed(42)
     # Ensure the directories exist
     image_dir = Path(image_dir)
     label_dir = Path(label_dir)
@@ -57,30 +58,34 @@ def create_data_yaml(data_path):
     """
     data = {
         'path': data_path,
-        'train': 'images/train',
-        'val': 'images/val',
+        'train': 'train/images',
+        'val': 'val/images',
         'test': '',
         'kpt_shape': [17, 3],
         'flip_idx': [0, 2, 1, 4, 3, 6, 5, 8, 7, 10, 9, 12, 11, 14, 13, 16, 15],
-        'names': {0: 'person'}
     }
+    names_section = yaml.dump({'names': {0: 'person'}}, default_flow_style=False)
 
     yaml_path = Path(data_path) / 'data.yaml'
     with open(yaml_path, 'w') as file:
-        yaml.dump(data, file, default_flow_style=False)
+        yaml.dump(data, file, default_flow_style=None)
+        file.write(names_section)
 
 
 def main():
     # Parse arguments
     params = yaml.safe_load(open("params.yaml"))
+    seed = params['prepare']['seed']
 
-    # Create dataset directory
-    data_path = params['data']['output_path'] # Path to the dataset root directory
+    current_dir = os.getcwd()
+    relative_path = params['data']['output_path']
+    # # Create dataset directory
+    data_path = os.path.join(current_dir, relative_path) # Path to the dataset root directory
 
-    # Split the dataset into train and validation sets
-    image_dir = os.path.join(data_path, 'images')
-    label_dir = os.path.join(data_path, 'labels')
-    split_data(image_dir, label_dir, params['prepare']['split'])
+    # # Split the dataset into train and validation sets
+    # image_dir = os.path.join(data_path, 'images')
+    # label_dir = os.path.join(data_path, 'labels')
+    # split_data(image_dir, label_dir, params['prepare']['split'], seed)
 
     # Create a data.yaml file for YOLO dataset configuration
     create_data_yaml(data_path)

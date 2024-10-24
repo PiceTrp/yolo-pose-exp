@@ -1,5 +1,6 @@
 import os
 import mlflow
+import yaml
 from ultralytics import YOLO
 
 
@@ -29,15 +30,21 @@ def main():
     # setup - mlflow
     setup_mlflow(params_train)
     # setup - model YOLO
-    model = YOLO("./yolo11x-pose.pt")
+    current_dir = os.getcwd()
+    assets_path = os.path.join(current_dir, "assets")
+    model_path = os.path.join(assets_path, params_train['yolo']['pretrained_model'])
+    model = YOLO(model_path)
+
     # train
-    results = model.train(data=os.path.join(params_data['output_path'], "data.yaml"), 
+    results = model.train(data=os.path.join(current_dir, params_data['output_path'], "data.yaml"), 
                           epochs=params_train['yolo']['epochs'], 
                           imgsz=params_train['yolo']['img_size'],
-                          batch_size=params_train['yolo']['batch_size'],
+                          batch=params_train['yolo']['batch_size'],
                           project=params_train['yolo']['project'],
-                          name=params_train['yolo']['name'])
-
+                          name=params_train['yolo']['name'],
+                          device=0,
+                          exist_ok=True,
+                          seed=params_train['seed']
 
 if __name__ == "__main__":
     main()

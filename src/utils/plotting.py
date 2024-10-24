@@ -1,7 +1,12 @@
 from ultralytics.utils.plotting import Annotator
 from ultralytics.utils.ops import xywhn2xyxy, scale_coords
 from ultralytics.engine.results import Keypoints
+
+import os
 import json
+import numpy as np
+import matplotlib.pyplot as plt
+from PIL import Image
 
 
 def yolopose2dict(text):
@@ -21,9 +26,13 @@ def yolopose2dict(text):
         data = line.split(" ")
         # object data
         object_data = data[:5]
+        if len(object_data) != 5:
+            raise ValueError(f"Expected 5 elements for object data, got {len(object_data)}")
         object_label = [int(object_data[i]) if i < 1 else np.float32(object_data[i]) for i in range(len(object_data))] # [class_id, center_x, center_y, width, height]: bbox of object, human class 0
         # keypoints data
         keypoints_data = data[5:] # 2d keypoints in 3-dimensional data: [x, y, visible]
+        if len(keypoints_data) != 51:
+            raise ValueError(f"Expected 51 elements for keypoints data, got {len(keypoints_data)}")
         keypoints = [[keypoints_data[i], keypoints_data[i+1], keypoints_data[i+2]] for i in range(0, len(keypoints_data), 3)] # pairs of 3 of all keypoint coordinates
         # append
         result.append({"object": object_label, "keypoints": keypoints})
@@ -74,7 +83,7 @@ def annotate_image(image_path, label_path, box_label="human", line_width=4,
     w, h = image.size
 
     # Draw annotation
-    annotator = Annotator(image, line_width=line_width, pil=False)
+    annotator = Annotator(image, line_width=line_width, pil=True)
     for item in label_data:
         box = np.array(item['object'][1:], dtype=np.float32)
         box = xywhn2xyxy(box, w, h)
@@ -108,3 +117,13 @@ def annotate_image(image_path, label_path, box_label="human", line_width=4,
         plt.title(f'{os.path.basename(image_path)}')
         plt.axis('off')  # Hide axes
         plt.show()
+
+
+if __name__ == '__main__':
+    image_path = "/root/pose_estimation_workspace/experiment_workspace/data/exp1/train/images/20240827-084711-5m_01-29_01-48_Code_11-31-42-t-nm_frame_0000.jpg"
+    label_path = "/root/pose_estimation_workspace/experiment_workspace/data/exp1/train/labels/20240827-084711-5m_01-29_01-48_Code_11-31-42-t-nm_frame_0000.txt"
+    annotate_image(image_path, label_path, box_label="human", line_width=4, 
+                   box_color=(0, 0, 255), txt_color=(255, 255, 255), radius=5, conf_thres=0.25, 
+                   save=True, 
+                   fname="/root/pose_estimation_workspace/experiment_workspace/assets/example_plot.jpg", 
+                   verbose=False, plot=False)
