@@ -15,10 +15,10 @@ train:
     MLFLOW_S3_ENDPOINT_URL: "https://minio.connectedtech.co.th/"
   yolo:
     pretrained_model: "yolo11x-pose.pt"
-    epochs: 100
-    batch_size: 2
+    epochs: 5
+    batch_size: 4
     img_size: 640
-    project: "results"
+    project: "YOLOv11-pose"
     name: exp1
 
 

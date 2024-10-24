@@ -13,7 +13,7 @@ stages:
   prepare:
     cmd: python src/prepare.py data/train data/val data/data.yaml
     deps:
-    - src/prepare.py 
+    - src/prepare.py
     - data/images
     - data/labels
     params:
@@ -23,3 +23,16 @@ stages:
     - data/train
     - data/val
     - data/data.yaml
+  train:
+    cmd: python src/train.py data/train data/val data/data.yaml results
+    deps:
+    - data/train
+    - data/val
+    - data/data.yaml
+    - src/train.py
+    params:
+    - train.mlflow
+    - train.seed
+    - train.yolo
+    outs:
+    - results
