@@ -14,12 +14,12 @@ train:
     AWS_SECRET_ACCESS_KEY: YiArLasbrIRBEEmtMocy6PgdGC6G5U4cOKfqJt4R
     MLFLOW_S3_ENDPOINT_URL: "https://minio.connectedtech.co.th/"
   yolo:
-    pretrained_model: "yolo11x-pose.pt"
-    epochs: 5
+    pretrained_model: "yolo11n-pose.pt"
+    epochs: 100
     batch_size: 4
     img_size: 640
-    project: "YOLOv11-pose"
-    name: exp1
+    project: "Safety_Crane_YOLOv11-pose"
+    name: exp1-data_ver1-model_v11n_pose
 
 
 

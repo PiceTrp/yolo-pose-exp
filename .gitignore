@@ -11,7 +11,7 @@ weights/
 data/*exp*
 *.pt
 *.ipynb_checkpoints
-YOLOv11-pose/
+Safety_Crane_YOLOv11-pose/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
