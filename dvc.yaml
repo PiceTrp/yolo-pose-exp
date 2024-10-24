@@ -1,0 +1,11 @@
+stages:
+  get_data:
+    cmd: python src/get_data.py data/project-69-at-2024-10-23-18-56-0ac7b1aa.json
+    deps:
+      - src/get_data.py 
+      - data/project-69-at-2024-10-23-18-56-0ac7b1aa.json
+    params:
+      - data.annotation_path
+      - data.output_path
+    outs:
+      - data/exp1
