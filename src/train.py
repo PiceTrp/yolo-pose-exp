@@ -44,7 +44,7 @@ def main():
                           name=params_train['yolo']['name'],
                           device=0,
                           exist_ok=True,
-                          seed=params_train['seed']
+                          seed=params_train['seed'],)
 
 if __name__ == "__main__":
     main()

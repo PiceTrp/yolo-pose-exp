@@ -24,7 +24,7 @@ stages:
     - data/val
     - data/data.yaml
   train:
-    cmd: python src/train.py data/train data/val data/data.yaml results
+    cmd: python src/train.py data/train data/val data/data.yaml YOLOv11-pose
     deps:
     - data/train
     - data/val
@@ -35,4 +35,4 @@ stages:
     - train.seed
     - train.yolo
     outs:
-    - results
+    - YOLOv11-pose

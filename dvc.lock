@@ -62,3 +62,45 @@ stages:
       md5: e465f9420fd8a17ebd970a7ac9126fce.dir
       size: 93850498
       nfiles: 150
+  train:
+    cmd: python src/train.py data/train data/val data/data.yaml YOLOv11-pose
+    deps:
+    - path: data/data.yaml
+      hash: md5
+      md5: cc302bf8214280b4b4b1a15c813f8877
+      size: 216
+    - path: data/train
+      hash: md5
+      md5: c3cf5d66ed6121c6693656049d81d162.dir
+      size: 354335957
+      nfiles: 601
+    - path: data/val
+      hash: md5
+      md5: d5e87673e77639cca004007b5c16b9e9.dir
+      size: 93895554
+      nfiles: 151
+    - path: src/train.py
+      hash: md5
+      md5: f567296a359802a34089404c76717574
+      size: 2022
+    params:
+      params.yaml:
+        train.mlflow:
+          MLFLOW_TRACKING_URI: https://mlflow.connectedtech.co.th
+          AWS_ACCESS_KEY_ID: 08rI2JgLEXYi3ctLLfXY
+          AWS_SECRET_ACCESS_KEY: YiArLasbrIRBEEmtMocy6PgdGC6G5U4cOKfqJt4R
+          MLFLOW_S3_ENDPOINT_URL: https://minio.connectedtech.co.th/
+        train.seed: 42
+        train.yolo:
+          pretrained_model: yolo11x-pose.pt
+          epochs: 5
+          batch_size: 4
+          img_size: 640
+          project: YOLOv11-pose
+          name: exp1
+    outs:
+    - path: YOLOv11-pose
+      hash: md5
+      md5: 858cc332c85228c2dba2dbda29d26f5a.dir
+      size: 241862713
+      nfiles: 26
