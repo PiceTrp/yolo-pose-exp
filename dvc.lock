@@ -1,52 +1,52 @@
 schema: '2.0'
 stages:
   get_data:
-    cmd: python src/get_data.py data/project-69-at-2024-10-23-18-56-0ac7b1aa.json
+    cmd: python src/get_data.py data/project-74-at-2024-11-06-02-57-deb5fc82.json
     deps:
-    - path: data/project-69-at-2024-10-23-18-56-0ac7b1aa.json
+    - path: data/project-74-at-2024-11-06-02-57-deb5fc82.json
       hash: md5
-      md5: 462ddb44ecab5508f8fd7ec54570d67d
-      size: 6136273
+      md5: 9cba6b931197aefa5092093ffdd30bb7
+      size: 2016203
     - path: src/get_data.py
       hash: md5
-      md5: 78de0c75704f98a69f9a7b0e47e0ac23
-      size: 562
+      md5: 47de7ea0767ddfc87ab83e005880b607
+      size: 566
     params:
       params.yaml:
-        data.annotation_path: ./data/project-69-at-2024-10-23-18-56-0ac7b1aa.json
+        data.annotation_path: ./data/project-74-at-2024-11-06-02-57-deb5fc82.json
         data.output_path: data
     outs:
     - path: data/images
       hash: md5
-      md5: c40d9226cf103faf549db8d9d8d58390.dir
-      size: 464092114
-      nfiles: 387
+      md5: 34701e59cc466c88a48cb6cc0a2f03ea.dir
+      size: 368243882
+      nfiles: 312
     - path: data/labels
       hash: md5
-      md5: 98453fc9267424ed4b26d64b6c560193.dir
-      size: 278379
-      nfiles: 375
+      md5: c1d9ae0734807bd277ec708e789bea52.dir
+      size: 244046
+      nfiles: 312
   prepare:
     cmd: python src/prepare.py data/train data/val data/data.yaml
     deps:
     - path: data/images
       hash: md5
-      md5: c40d9226cf103faf549db8d9d8d58390.dir
-      size: 464092114
-      nfiles: 387
+      md5: 34701e59cc466c88a48cb6cc0a2f03ea.dir
+      size: 368243882
+      nfiles: 312
     - path: data/labels
       hash: md5
-      md5: 98453fc9267424ed4b26d64b6c560193.dir
-      size: 278379
-      nfiles: 375
+      md5: 31288edc6e150eae8691fb1f619b206b.dir
+      size: 390488
+      nfiles: 312
     - path: src/prepare.py
       hash: md5
-      md5: 401d3cf7920984d4bafe82531aa6ed6d
-      size: 3163
+      md5: 7eaae0ff35d4cd1109a9d1cbd1da1a7e
+      size: 4465
     params:
       params.yaml:
         prepare.seed: 42
-        prepare.split: 0.8
+        prepare.split: 0.9
     outs:
     - path: data/data.yaml
       hash: md5
@@ -54,14 +54,14 @@ stages:
       size: 216
     - path: data/train
       hash: md5
-      md5: 6c513852b67baca390334936f3251f5e.dir
-      size: 354150503
-      nfiles: 600
+      md5: 434464755754fa1cbc48ddf913e44548.dir
+      size: 330004000
+      nfiles: 560
     - path: data/val
       hash: md5
-      md5: e465f9420fd8a17ebd970a7ac9126fce.dir
-      size: 93850498
-      nfiles: 150
+      md5: 77027df71fa447f96f6ba1a7cd2797f5.dir
+      size: 38630370
+      nfiles: 64
   train:
     cmd: python src/train.py data/train data/val data/data.yaml Safety_Crane_YOLOv11-pose
     deps:
@@ -71,18 +71,18 @@ stages:
       size: 216
     - path: data/train
       hash: md5
-      md5: c3cf5d66ed6121c6693656049d81d162.dir
-      size: 354335957
-      nfiles: 601
+      md5: 35aa7390c20fd9fcce9a1100f7e8648f.dir
+      size: 330179764
+      nfiles: 561
     - path: data/val
       hash: md5
-      md5: d5e87673e77639cca004007b5c16b9e9.dir
-      size: 93895554
-      nfiles: 151
+      md5: f21131d1348157d3f97d4467e7b202f5.dir
+      size: 38649650
+      nfiles: 65
     - path: src/train.py
       hash: md5
-      md5: 529a9989a49a7f4c9610b9b6a4c74f24
-      size: 2051
+      md5: 4a9aecbda2bd557daa7f8950368e26d3
+      size: 2287
     params:
       params.yaml:
         train.mlflow:
@@ -92,18 +92,16 @@ stages:
           MLFLOW_S3_ENDPOINT_URL: https://minio.connectedtech.co.th/
         train.seed: 42
         train.yolo:
-          pretrained_model: yolo11n-pose.pt
+          pretrained_model: yolo11x-pose.pt
           epochs: 100
-          batch_size: 32
+          batch_size: 8
           img_size: 640
-          device:
-          - 0
-          - 1
+          device: 0
           project: Safety_Crane_YOLOv11-pose
-          name: exp1-data_ver1-model_v11n_pose
+          name: exp4-close_mosaic-100epchs-split0.9
     outs:
     - path: Safety_Crane_YOLOv11-pose
       hash: md5
-      md5: f25b465ae2946284f2f59d16ee5e635c.dir
-      size: 21122783
-      nfiles: 29
+      md5: 115e93ef7eda54a3b52bfbe95cb37576.dir
+      size: 243615577
+      nfiles: 27

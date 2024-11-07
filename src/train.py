@@ -33,6 +33,7 @@ def main():
     current_dir = os.getcwd()
     assets_path = os.path.join(current_dir, "assets")
     model_path = os.path.join(assets_path, params_train['yolo']['pretrained_model'])
+    print(f"Load model path... {model_path}")
     model = YOLO(model_path)
 
     # train
@@ -44,7 +45,12 @@ def main():
                           name=params_train['yolo']['name'],
                           device=params_train['yolo']['device'],
                           exist_ok=True,
-                          seed=params_train['seed'],)
+                          seed=params_train['seed'],
+                          pretrained=True,
+                          mosaic=0.0,
+                          copy_paste=0.5,
+                          verbose=True,
+                          )
 
 if __name__ == "__main__":
     main()

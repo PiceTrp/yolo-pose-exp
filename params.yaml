@@ -1,9 +1,9 @@
 data:
-  annotation_path: "./data/project-69-at-2024-10-23-18-56-0ac7b1aa.json"
+  annotation_path: "./data/project-74-at-2024-11-06-02-57-deb5fc82.json"
   output_path: "data"
 
 prepare:
-  split: 0.8
+  split: 0.9
   seed: 42
 
 train:
@@ -14,13 +14,13 @@ train:
     AWS_SECRET_ACCESS_KEY: YiArLasbrIRBEEmtMocy6PgdGC6G5U4cOKfqJt4R
     MLFLOW_S3_ENDPOINT_URL: "https://minio.connectedtech.co.th/"
   yolo:
-    pretrained_model: "yolo11n-pose.pt"
+    pretrained_model: "yolo11x-pose.pt"
     epochs: 100
-    batch_size: 32
+    batch_size: 8
     img_size: 640
-    device: [0,1]
+    device: 0
     project: "Safety_Crane_YOLOv11-pose"
-    name: exp1-data_ver1-model_v11n_pose
+    name: exp4-close_mosaic-100epchs-split0.9
 
 
 

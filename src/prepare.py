@@ -1,8 +1,16 @@
+import sys
+sys.path.append('/root/pose_estimation_workspace/experiment_workspace')
+
 import os
 import shutil
 import random
 from pathlib import Path
 import yaml
+from ultralytics import YOLO
+
+# Visibiity adjustment function
+from data.adjust_visibility import get_correct_visibility_label
+from data.yolo_dataset import YoloDataset
 
 
 def split_data(image_dir, label_dir, split_ratio=0.8, seed=42):
@@ -77,19 +85,37 @@ def main():
     params = yaml.safe_load(open("params.yaml"))
     seed = params['prepare']['seed']
 
+    # setup data
     current_dir = os.getcwd()
-    relative_path = params['data']['output_path']
-    # Create dataset directory
-    data_path = os.path.join(current_dir, relative_path) # Path to the dataset root directory
+    dataset_name = params['data']['output_path']
+    data_path = os.path.join(current_dir, dataset_name) # Path to the dataset root directory
+    dataset = YoloDataset(current_dir, dataset_name)
 
-    # # Split the dataset into train and validation sets
+    # Adjust visibility
+    model_path = os.path.join(current_dir, 'assets', 'yolo11x-pose.pt')
+    model = YOLO(model_path)
+    save_label_dir = os.path.join(data_path, 'labels')
+    for i in range(len(dataset.image_paths)):
+        try:
+            # save txt label with visibility adjusted
+            label_result = get_correct_visibility_label(image_path=dataset.image_paths[i], 
+                                                        label_path=dataset.label_paths[i], 
+                                                        model=model, 
+                                                        save_txt_dir=save_label_dir, 
+                                                        save=True, verbose=False)
+        except:
+            # meaning no label file
+            print("No label File... Save empty label")
+            with open(os.path.join(save_label_dir, os.path.basename(dataset.label_paths[i])), 'w') as file:
+                pass
+
+    # Split the dataset into train and validation sets
     image_dir = os.path.join(data_path, 'images')
     label_dir = os.path.join(data_path, 'labels')
     split_data(image_dir, label_dir, params['prepare']['split'], seed)
 
     # Create a data.yaml file for YOLO dataset configuration
     create_data_yaml(data_path)
-
 
 
 if __name__ == '__main__':

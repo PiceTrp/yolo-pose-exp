@@ -13,7 +13,7 @@ def main():
                                             output_dir=params["output_path"],
                                             format_type="yolo")
     converter.convert(verbose=False)
-
+    
 
 if __name__ == '__main__':
     main()
