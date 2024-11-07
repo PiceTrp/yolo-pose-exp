@@ -2,6 +2,8 @@
 assets/
 images/
 labels/
+/train
+/val
 results/
 weights/
 *.jpg
